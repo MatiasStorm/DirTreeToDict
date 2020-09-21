@@ -24,6 +24,7 @@ class DTTD():
     def get_directory_structure(self, rootdir, filtered_file_ext=None):
         DIRECTORIES = "directories"
         FILES = "files"
+        NAME = "name"
         dir = {}
         start = rootdir.rfind(os.sep) + 1
         for path, dirs, files in os.walk(rootdir):
@@ -33,11 +34,13 @@ class DTTD():
                 dict_path.append(f)
                 dict_path.append(DIRECTORIES)
             dict_path = dict_path[0:-1]
+
             if len(dirs):
                 value = {
-                    DIRECTORIES: [{i: {}} for i in dirs],
+                    DIRECTORIES: [{i: {}} for i in sorted( dirs )],
                 }
                 self.deep_insert(dict_path, dir, value)
+
             if len(files):
                 if filtered_file_ext:
                     files = filter(lambda x: any(e in x for e in filtered_file_ext), files)
