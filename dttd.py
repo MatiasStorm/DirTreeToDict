@@ -24,7 +24,6 @@ class DTTD():
     def get_directory_structure(self, rootdir, filtered_file_ext=None):
         DIRECTORIES = "directories"
         FILES = "files"
-        NAME = "name"
         dir = {}
         start = rootdir.rfind(os.sep) + 1
         for path, dirs, files in os.walk(rootdir):
