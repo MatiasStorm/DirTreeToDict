@@ -4,7 +4,7 @@ import stat
 
 
 class DTTD():
-    def deep_insert(self, keys, dictionary, value):
+    def __deep_insert(self, keys, dictionary, value):
         key = keys[0]
         if len(keys) == 1:
             if isinstance(dictionary, list):
@@ -16,15 +16,14 @@ class DTTD():
         elif isinstance(dictionary, list):
             for i in range(len(dictionary)):
                 if [*dictionary[i]][0] == key:
-                    dictionary[i][key] = self.deep_insert(keys[1:], dictionary[i][key], value)
+                    dictionary[i][key] = self.__deep_insert(keys[1:], dictionary[i][key], value)
         else:
-            dictionary[key] = self.deep_insert(keys[1:], dictionary[key], value)
+            dictionary[key] = self.__deep_insert(keys[1:], dictionary[key], value)
         return dictionary
 
-    def get_directory_structure(self, rootdir, filtered_file_ext=None):
+    def get_directory_structure(self,rootdir, filtered_file_ext=None):
         DIRECTORIES = "directories"
         FILES = "files"
-        NAME = "name"
         dir = {}
         start = rootdir.rfind(os.sep) + 1
         for path, dirs, files in os.walk(rootdir):
@@ -39,7 +38,7 @@ class DTTD():
                 value = {
                     DIRECTORIES: [{i: {}} for i in sorted( dirs )],
                 }
-                self.deep_insert(dict_path, dir, value)
+                self.__deep_insert(dict_path, dir, value)
 
             if len(files):
                 if filtered_file_ext:
@@ -55,6 +54,6 @@ class DTTD():
                         }
                     }
                     value.append(file_dict)
-                self.deep_insert(dict_path, dir, {FILES: value})
+                self.__deep_insert(dict_path, dir, {FILES: value})
         return dir
 
